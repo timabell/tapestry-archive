@@ -37,6 +37,14 @@ def markdown_description(raw)
   raw.strip.split("\n").map{|l|l.strip}.join("  \n")
 end
 
+def login_detection(doc)
+  login_form=doc.css("input[type='password']")
+  if login_form
+    puts "Error: login form detected, check cookie value in .env"
+    exit 1
+  end
+end
+
 def get_metadata(doc)
   title = doc.css('h1').first.text.strip
   description = markdown_description(doc.css('.page-note p').text)
@@ -122,6 +130,7 @@ end
 while observation_id
   puts observation_id
   doc = get_doc(observation_id)
+  login_detection(doc)
   observation_path="#{output_path}/#{observation_id}"
   FileUtils.mkdir_p(observation_path) unless Dir.exist?(observation_path)
   md=save_media_for_page(output_path: observation_path, doc: doc)
