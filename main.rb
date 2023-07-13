@@ -113,6 +113,7 @@ if File.exist?(observation_id_file)
   observation_id = Integer(File.read("#{output_path}/observation_id.txt"))
   puts "Continuing from after last saved observation # #{observation_id}"
   doc = get_doc(observation_id)
+  # puts doc # debug - uncomment this to check if the retrieved html looks like a logged in page with an observation on it, if it just looks like a login page you need to update/set cookie_value
   observation_id = get_next_observation_id(doc) # skip last completed entry
 else
   observation_id = ENV["FIRST_OBSERVATION_ID"]
